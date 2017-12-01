@@ -1,5 +1,9 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  line-height: 1;
+
+  font-family: "Montserrat", sans-serif;
+  /* background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%); */
+  background: linear-gradient(45deg, #d4145a, #fbb03b);
 }
