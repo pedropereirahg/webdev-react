@@ -10,10 +10,15 @@
     "react-dom": "^16.2.0",
     "react-scripts": "1.0.17"
   },
+  "devDependencies": {
+    "flow-bin": "^0.60.0"
+  },
   "scripts": {
-    "start": "react-scripts start",
+    "prerestart": "taskkill /f /im node.exe",
+    "start": "set HTTPS=true && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "flow": "flow"
   }
 }
