@@ -30,6 +30,8 @@ import "./App.css";
 import ModalDetailsAluno from "./components/ModalDetailsAluno";
 import { compose } from "recompose";
 import { Hidden, withWidth } from "material-ui";
+import capitalize from "lodash/capitalize";
+import { isWidthDown, isWidthUp } from "material-ui/utils/withWidth";
 
 const styles = theme => ({
   root: {
@@ -110,6 +112,10 @@ const InputSearchAluno = inputProps => {
     />
   );
 };
+const capitalizeEvery = (...words) =>
+  words.map(word => capitalize(word)).join(" ");
+
+console.log("CAPIRALIZE", capitalizeEvery("rod", "costa", "clemente"));
 
 /**
  * Start with the slowest value as low end devices often have a small screen.
@@ -160,19 +166,19 @@ class App extends Component {
     });
   };
 
-    updateAluno = (aluno, index) => {
-        console.log({aluno, index});
-        console.log(this.state);
+  updateAluno = (aluno, index) => {
+    console.log({ aluno, index });
+    console.log(this.state);
 
-        // this.handleRequestClose();
-    };
+    // this.handleRequestClose();
+  };
 
   handleAddStudents(students) {
     this.setState({ alunos: students });
   }
 
   componentDidMount() {
-    fetch(`https://randomuser.me/api/?results=50`)
+    fetch(`https://randomuser.me/api/?results=50&nat=us,dk,fr,gb`)
       .then(response => response.json())
       .then(json => this.handleAddStudents(json.results));
   }
@@ -204,7 +210,8 @@ class App extends Component {
 
           <Paper>
             {alunos ? (
-              <List>
+              <List
+                  {...(isWidthDown("md", width) && { dense: true })}>
                 {alunos.map((aluno, index) => (
                   <Tooltip
                     id="tooltip-icon"
@@ -220,29 +227,28 @@ class App extends Component {
                     >
                       {/*Current width: {width}*/}
                       <Avatar alt="Remy Sharp" src={aluno.picture.large} />
-                      <Hidden smDown>
-                        <ListItemText
-                          primary={`${aluno.name.first} ${aluno.name.last}`}
-                          secondary={aluno.email}
-                        />
-                      </Hidden>
-
+                      <ListItemText
+                        primary={capitalizeEvery(
+                          aluno.name.first,
+                          aluno.name.last
+                        )}
+                        {...isWidthUp("sm", width) && ({ secondary: aluno.email })}
+                      />
                       <ListItemSecondaryAction>
-                        <Hidden smDown>
-                          <Button
-                            className={classes.button}
-                            dense
-                            onClick={() => {
-                              this.handleClickOpen(aluno, index);
-                            }}
-                          >
-                            Ver detalhes
-                          </Button>
-                        </Hidden>
-                        <Checkbox
-                          onChange={this.handleToggle(index)}
-                          checked={this.state.checked.indexOf(index) !== -1}
-                        />
+                        <Button
+                          className={classes.button}
+                          dense
+                          onClick={() => {
+                            this.handleClickOpen(aluno, index);
+                          }}
+                        >
+                          {isWidthUp("sm", width) && "Ver detalhes"}
+                        </Button>
+
+                        {/*<Checkbox*/}
+                        {/*onChange={this.handleToggle(index)}*/}
+                        {/*checked={this.state.checked.indexOf(index) !== -1}*/}
+                        {/*/>*/}
                       </ListItemSecondaryAction>
                     </ListItem>
                   </Tooltip>
