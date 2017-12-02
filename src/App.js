@@ -210,8 +210,7 @@ class App extends Component {
 
           <Paper>
             {alunos ? (
-              <List
-                  {...(isWidthDown("md", width) && { dense: true })}>
+              <List {...isWidthDown("md", width) && { dense: true }}>
                 {alunos.map((aluno, index) => (
                   <Tooltip
                     id="tooltip-icon"
@@ -232,7 +231,9 @@ class App extends Component {
                           aluno.name.first,
                           aluno.name.last
                         )}
-                        {...isWidthUp("sm", width) && ({ secondary: aluno.email })}
+                        {...isWidthUp("sm", width) && {
+                          secondary: aluno.email
+                        }}
                       />
                       <ListItemSecondaryAction>
                         <Button
