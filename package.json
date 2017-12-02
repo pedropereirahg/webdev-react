@@ -17,6 +17,8 @@
     "recompose": "^0.26.0"
   },
   "devDependencies": {
+    "eslint": "^4.12.1",
+    "eslint-plugin-react": "^7.5.1",
     "flow-bin": "^0.60.0"
   },
   "scripts": {
