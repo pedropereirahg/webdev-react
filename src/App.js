@@ -1,25 +1,24 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import {withStyles} from "material-ui/styles";
-import {purple, grey} from "material-ui/colors";
+import { withStyles } from "material-ui/styles";
+import { purple, grey } from "material-ui/colors";
 
 import Paper from "material-ui/Paper";
 import Grid from "material-ui/Grid";
 import Button from "material-ui/Button";
 
-import {MenuItem} from "material-ui/Menu";
+import { MenuItem } from "material-ui/Menu";
 import List, {
-    ListItem,
-    ListItemSecondaryAction,
-    ListItemText
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText
 } from "material-ui/List";
 import Checkbox from "material-ui/Checkbox";
 import Avatar from "material-ui/Avatar";
 import Divider from "material-ui/Divider";
 import TextField from "material-ui/TextField";
-import {CircularProgress} from "material-ui/Progress";
-
+import { CircularProgress } from "material-ui/Progress";
 
 import Tooltip from "material-ui/Tooltip";
 
@@ -28,209 +27,237 @@ import parse from "autosuggest-highlight/parse";
 
 import logo from "./logo.svg";
 import "./App.css";
-import ModalDetailsAluno from './components/ModalDetailsAluno';
+import ModalDetailsAluno from "./components/ModalDetailsAluno";
+import { compose } from "recompose";
+import { Hidden, withWidth } from "material-ui";
 
 const styles = theme => ({
-    root: {
-        width: "100%",
-        maxWidth: 360,
-        background: theme.palette.background.paper
-    },
+  root: {
+    width: "100%",
+    maxWidth: 360,
+    background: theme.palette.background.paper
+  },
 
-    // Autocomplete
-    suggestionsContainerOpen: {
-        position: "absolute",
-        marginTop: theme.spacing.unit,
-        marginBottom: theme.spacing.unit * 3,
-        left: 0,
-        right: 0
-    },
-    suggestion: {
-        display: "block"
-    },
-    suggestionsList: {
-        margin: 0,
-        padding: 0,
-        listStyleType: "none"
-    },
-    textField: {
-        width: "100%"
-    }
+  // Autocomplete
+  suggestionsContainerOpen: {
+    position: "absolute",
+    marginTop: theme.spacing.unit,
+    marginBottom: theme.spacing.unit * 3,
+    left: 0,
+    right: 0
+  },
+  suggestion: {
+    display: "block"
+  },
+  suggestionsList: {
+    margin: 0,
+    padding: 0,
+    listStyleType: "none"
+  },
+  textField: {
+    width: "100%"
+  }
 });
 
-function renderSuggestion(suggestion, {query, isHighlighted}) {
-    const matches = match(suggestion.label, query);
-    const parts = parse(suggestion.label, matches);
+function renderSuggestion(suggestion, { query, isHighlighted }) {
+  const matches = match(suggestion.label, query);
+  const parts = parse(suggestion.label, matches);
 
-    return (
-        <MenuItem selected={isHighlighted} component="div">
-            <div>
-                {parts.map((part, index) => {
-                    return part.highlight ? (
-                        <span key={index} style={{fontWeight: 300}}>
+  return (
+    <MenuItem selected={isHighlighted} component="div">
+      <div>
+        {parts.map((part, index) => {
+          return part.highlight ? (
+            <span key={index} style={{ fontWeight: 300 }}>
               {part.text}
             </span>
-                    ) : (
-                        <strong key={index} style={{fontWeight: 500}}>
-                            {part.text}
-                        </strong>
-                    );
-                })}
-            </div>
-        </MenuItem>
-    );
+          ) : (
+            <strong key={index} style={{ fontWeight: 500 }}>
+              {part.text}
+            </strong>
+          );
+        })}
+      </div>
+    </MenuItem>
+  );
 }
 
 function renderSuggestionsContainer(options) {
-    const {containerProps, children} = options;
+  const { containerProps, children } = options;
 
-    return (
-        <Paper {...containerProps} square>
-            {children}
-        </Paper>
-    );
+  return (
+    <Paper {...containerProps} square>
+      {children}
+    </Paper>
+  );
 }
 
 const InputSearchAluno = inputProps => {
-    const {classes, autoFocus, value, ref, ...other} = inputProps;
+  const { classes, autoFocus, value, ref, ...other } = inputProps;
 
-    return (
-        <TextField
-            autoFocus={autoFocus}
-            className={classes.textField}
-            value={value}
-            inputRef={ref}
-            InputProps={{
-                classes: {
-                    input: classes.input
-                },
-                ...other
-            }}
-        />
-    );
+  return (
+    <TextField
+      autoFocus={autoFocus}
+      className={classes.textField}
+      value={value}
+      inputRef={ref}
+      InputProps={{
+        classes: {
+          input: classes.input
+        },
+        ...other
+      }}
+    />
+  );
 };
 
+/**
+ * Start with the slowest value as low end devices often have a small screen.
+ *
+ * innerWidth |0      xs      sm      md      lg      xl
+ *            |-------|-------|-------|-------|-------|------>
+ * width      |  xs   |  xs   |  sm   |  md   |  lg   |  xl
+ */
 class App extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            alunos: null,
-            open: false,
-            checked: [0],
-            alunoSelected: null
-        };
+    this.state = {
+      alunos: null,
+      open: false,
+      checked: [0],
+      alunoSelected: null
+    };
+  }
+
+  handleToggle = value => () => {
+    const { checked } = this.state;
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
     }
 
-    handleToggle = value => () => {
-        const {checked} = this.state;
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
+    this.setState({
+      checked: newChecked
+    });
+  };
 
-        if (currentIndex === -1) {
-            newChecked.push(value);
-        } else {
-            newChecked.splice(currentIndex, 1);
-        }
+  handleClickOpen = (aluno, index) => {
+    this.setState({
+      open: true,
+      alunoSelected: { ...aluno, index }
+    });
+  };
 
-        this.setState({
-            checked: newChecked
-        });
+  handleRequestClose = () => {
+    this.setState({
+      open: false,
+      alunoSelected: null
+    });
+  };
+
+    updateAluno = (aluno, index) => {
+        console.log({aluno, index});
+        console.log(this.state);
+
+        // this.handleRequestClose();
     };
 
-    handleClickOpen = (aluno) => {
-        this.setState({
-            open: true,
-            alunoSelected: aluno
-        });
-    };
+  handleAddStudents(students) {
+    this.setState({ alunos: students });
+  }
 
-    handleRequestClose = () => {
-        this.setState({
-            open: false,
-            alunoSelected: null
-        });
-    };
+  componentDidMount() {
+    fetch(`https://randomuser.me/api/?results=50`)
+      .then(response => response.json())
+      .then(json => this.handleAddStudents(json.results));
+  }
 
-    handleAddStudents(students) {
-        this.setState({alunos: students});
-    }
+  render() {
+    const { classes, width } = this.props;
+    const { alunos, open } = this.state;
+    return (
+      <Grid container>
+        {open && (
+          <ModalDetailsAluno
+            isOpen={open}
+            aluno={this.state.alunoSelected}
+            close={this.handleRequestClose}
+            updateAluno={this.updateAluno}
+          />
+        )}
+        <Grid item xs={12}>
+          <Paper>
+            <TextField
+              label="Nome do aluno"
+              id="margin-normal"
+              defaultValue="José da Silva"
+              className={classes.textField}
+              helperText="Digite o nome do aluno que você deseja procurar"
+              margin="normal"
+            />
+          </Paper>
 
-    componentDidMount() {
-        fetch(`https://randomuser.me/api/?results=5`)
-            .then(response => response.json())
-            .then(json => this.handleAddStudents(json.results));
-    }
-
-    render() {
-        const {classes} = this.props;
-        const {alunos, open} = this.state;
-        return (
-            <Grid container>
-                {open && (
-                    <ModalDetailsAluno isOpen={open}
-                                       aluno={this.state.alunoSelected}
-                                       close={this.handleRequestClose}/>
-                )}
-                <Grid item xs={12}>
-                    <Paper>
-                        <TextField
-                            label="Nome do aluno"
-                            id="margin-normal"
-                            defaultValue="José da Silva"
-                            className={classes.textField}
-                            helperText="Digite o nome do aluno que você deseja procurar"
-                            margin="normal"
+          <Paper>
+            {alunos ? (
+              <List>
+                {alunos.map((aluno, index) => (
+                  <Tooltip
+                    id="tooltip-icon"
+                    title={`Ver detalhes sobre: ${aluno.name.first}`}
+                    enterDelay={300}
+                    placement="bottom"
+                    key={index}
+                  >
+                    <ListItem
+                      key={index}
+                      className={classes.listItem}
+                      divider={true}
+                    >
+                      {/*Current width: {width}*/}
+                      <Avatar alt="Remy Sharp" src={aluno.picture.large} />
+                      <Hidden smDown>
+                        <ListItemText
+                          primary={`${aluno.name.first} ${aluno.name.last}`}
+                          secondary={aluno.email}
                         />
-                    </Paper>
+                      </Hidden>
 
-                    <Paper>
-                        {alunos ? (
-                            <List>
-                                {alunos.map((aluno, index) => (
-                                    <Tooltip
-                                        id="tooltip-icon"
-                                        title={`Ver detalhes sobre: ${aluno.name.first}`}
-                                        enterDelay={300}
-                                        placement="bottom"
-                                        key={index}
-                                    >
-                                        <ListItem
-                                            key={index}
-                                            className={classes.listItem}
-                                            divider={true}
-                                        >
-                                            <Avatar alt="Remy Sharp" src={aluno.picture.large}/>
-                                            <ListItemText
-                                                primary={`${aluno.name.first} ${aluno.name.last}`}
-                                                secondary={aluno.email}
-                                            />
-                                            <ListItemSecondaryAction>
-                                                <Button className={classes.button}
-                                                        dense
-                                                        onClick={() => { this.handleClickOpen(aluno) }}
-                                                >
-                                                    Ver detalhes
-                                                </Button>
-                                                <Checkbox
-                                                    onChange={this.handleToggle(index)}
-                                                    checked={this.state.checked.indexOf(index) !== -1}
-                                                />
-                                            </ListItemSecondaryAction>
-                                        </ListItem>
-                                    </Tooltip>
-                                ))}
-                            </List>
-                        ) : (
-                            <CircularProgress/>
-                        )}
+                      <ListItemSecondaryAction>
+                        <Hidden smDown>
+                          <Button
+                            className={classes.button}
+                            dense
+                            onClick={() => {
+                              this.handleClickOpen(aluno, index);
+                            }}
+                          >
+                            Ver detalhes
+                          </Button>
+                        </Hidden>
+                        <Checkbox
+                          onChange={this.handleToggle(index)}
+                          checked={this.state.checked.indexOf(index) !== -1}
+                        />
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </Tooltip>
+                ))}
+              </List>
+            ) : (
+              <CircularProgress />
+            )}
 
-                        <Divider/>
-                    </Paper>
-                </Grid>
-            </Grid>
-        );
-    }
+            <Divider />
+          </Paper>
+        </Grid>
+      </Grid>
+    );
+  }
 }
 
-export default withStyles(styles)(App);
+export default compose(withWidth(), withStyles(styles))(App);

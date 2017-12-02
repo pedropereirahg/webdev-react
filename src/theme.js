@@ -7,6 +7,20 @@ import grey from "material-ui/colors/grey";
 
 export default function theme(outerTheme) {
     return createMuiTheme({
+        palette: {
+            primary: {
+                ...purple,
+                A400: "#d72756",
+                A700: "#d72756",
+                A200: "#d72756",
+                500: "#d72756",
+            }, // Purple and green play nicely together.
+            secondary: {
+                ...green,
+                A400: '#00e677',
+            },
+            error: red,
+        },
         typography: {
             fontFamily: "'Montserrat', sans-serif",
         },
