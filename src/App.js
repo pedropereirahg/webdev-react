@@ -225,7 +225,7 @@ class App extends Component {
                       divider={true}
                     >
                       {/*Current width: {width}*/}
-                      <Avatar alt="Remy Sharp" src={aluno.picture.large} />
+                      <Avatar alt="Remy Sharp" src={aluno.picture.large}/>
                       <ListItemText
                         primary={capitalizeEvery(
                           aluno.name.first,
