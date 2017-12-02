@@ -14,7 +14,7 @@ export default function theme() {
         A700: '#d72756',
         A200: '#d72756',
         500: '#d72756',
-      }, // Purple and green play nicely together.
+      },
       secondary: {
         ...green,
         A400: '#00e677',
@@ -48,10 +48,8 @@ export default function theme() {
         },
         dense: {
           height: 'auto',
-          // padding: `${theme.spacing.unit - 1}px ${theme.spacing.unit}px`,
           minWidth: 64,
-          minHeight: 32,
-          // fontSize: theme.typography.pxToRem(theme.typography.fontSize - 1)
+          minHeight: 32
         },
       },
     },
