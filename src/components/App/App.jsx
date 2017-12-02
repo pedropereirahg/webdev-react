@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { withStyles } from "material-ui/styles";
-import { purple, grey } from "material-ui/colors";
 
 import Paper from "material-ui/Paper";
 import Grid from "material-ui/Grid";
@@ -13,8 +12,8 @@ import List, {
   ListItem,
   ListItemSecondaryAction,
   ListItemText
-} from "material-ui/List";
-import Checkbox from "material-ui/Checkbox";
+} from 'material-ui/List';
+
 import Avatar from "material-ui/Avatar";
 import Divider from "material-ui/Divider";
 import TextField from "material-ui/TextField";
@@ -25,11 +24,10 @@ import Tooltip from "material-ui/Tooltip";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
 
-import logo from "./logo.svg";
 import "./App.css";
-import ModalDetailsAluno from "./components/ModalDetailsAluno";
+import ModalDetailsAluno from "../ModalDetailsAluno";
 import { compose } from "recompose";
-import { Hidden, withWidth } from "material-ui";
+import { withWidth } from "material-ui";
 import capitalize from "lodash/capitalize";
 import { isWidthDown, isWidthUp } from "material-ui/utils/withWidth";
 
