@@ -330,8 +330,6 @@ class ModalDetailsAluno extends Component {
   }
 }
 
-export default withStyles(styles)(ModalDetailsAluno);
-
 FieldAluno.propTypes = {
   aluno: PropTypes.object,
   fieldKey: PropTypes.string,
@@ -348,3 +346,5 @@ ModalDetailsAluno.propTypes = {
   isOpen: PropTypes.bool,
   updateAluno: PropTypes.func
 };
+
+export default withStyles(styles)(ModalDetailsAluno);
