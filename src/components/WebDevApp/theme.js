@@ -49,7 +49,7 @@ export default function theme() {
         dense: {
           height: 'auto',
           minWidth: 64,
-          minHeight: 32
+          minHeight: 32,
         },
       },
     },
