@@ -1,0 +1,38 @@
+{
+  "name": "webdev",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "autosuggest-highlight": "^3.1.1",
+    "lodash": "^4.17.4",
+    "material-ui": "^1.0.0-beta.22",
+    "material-ui-icons": "^1.0.0-beta.17",
+    "material-ui-pickers": "^1.0.0-beta.6",
+    "moment": "^2.19.3",
+    "prop-types": "^15.6.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-form-validator-core": "^0.1.3",
+    "react-scripts": "1.0.17",
+    "recompose": "^0.26.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "7",
+    "eslint": "4.12.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-babel": "^4.1.2",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
+    "flow-bin": "^0.60.0"
+  },
+  "scripts": {
+    "prerestart": "taskkill /f /im node.exe",
+    "start": "set HTTPS=true && react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "eslint": "./node_modules/.bin/eslint ./src",
+    "flow": "flow"
+  }
+}

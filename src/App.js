@@ -115,8 +115,6 @@ const InputSearchAluno = inputProps => {
 const capitalizeEvery = (...words) =>
   words.map(word => capitalize(word)).join(" ");
 
-console.log("CAPIRALIZE", capitalizeEvery("rod", "costa", "clemente"));
-
 /**
  * Start with the slowest value as low end devices often have a small screen.
  *
@@ -225,7 +223,7 @@ class App extends Component {
                       divider={true}
                     >
                       {/*Current width: {width}*/}
-                      <Avatar alt="Remy Sharp" src={aluno.picture.large}/>
+                      <Avatar alt="Remy Sharp" src={aluno.picture.large} />
                       <ListItemText
                         primary={capitalizeEvery(
                           aluno.name.first,

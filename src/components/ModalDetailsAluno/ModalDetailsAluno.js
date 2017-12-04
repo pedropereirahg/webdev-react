@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Avatar from "material-ui/Avatar";
 import Button from "material-ui/Button";
-import { TimePicker, DatePicker, DateTimePicker } from "material-ui-pickers";
+// import { TimePicker, DatePicker, DateTimePicker } from "material-ui-pickers";
 import moment from "moment";
 import "moment/locale/pt-br";
 import _ from "lodash";
@@ -283,17 +283,17 @@ class ModalDetailsAluno extends Component {
             className={classes.avatarBig}
             src={aluno.picture.large}
           />
-          <DatePicker
-            value={this.state.dob || aluno.dob}
-            onChange={this.handleChange("dob")}
-            leftArrowIcon={<ArrowBack />}
-            rightArrowIcon={<ArrowForward />}
-            format="DD/MM/YYYY"
-            okLabel="Salvar"
-            cancelLabel="Cancelar"
-            disableFuture
-            autoOk
-          />
+          {/*<DatePicker*/}
+            {/*value={this.state.dob || aluno.dob}*/}
+            {/*onChange={this.handleChange("dob")}*/}
+            {/*leftArrowIcon={<ArrowBack />}*/}
+            {/*rightArrowIcon={<ArrowForward />}*/}
+            {/*format="DD/MM/YYYY"*/}
+            {/*okLabel="Salvar"*/}
+            {/*cancelLabel="Cancelar"*/}
+            {/*disableFuture*/}
+            {/*autoOk*/}
+          {/*/>*/}
           <FormAluno
             aluno={aluno}
             classes={classes}
@@ -330,8 +330,6 @@ class ModalDetailsAluno extends Component {
   }
 }
 
-export default withStyles(styles)(ModalDetailsAluno);
-
 FieldAluno.propTypes = {
   aluno: PropTypes.object,
   fieldKey: PropTypes.string,
@@ -348,3 +346,5 @@ ModalDetailsAluno.propTypes = {
   isOpen: PropTypes.bool,
   updateAluno: PropTypes.func
 };
+
+export default withStyles(styles)(ModalDetailsAluno);
