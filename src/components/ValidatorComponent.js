@@ -30,11 +30,16 @@ class ValidatorComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.instantValidate && nextProps.value !== this.props.value) {
+    const {
+      errorMessages,
+      validators,
+      value
+    } = this.props;
+    if (this.instantValidate && nextProps.value !== value) {
       this.validate(nextProps.value);
     }
     if (nextProps.validators && nextProps.errorMessages &&
-            (this.props.validators !== nextProps.validators || this.props.errorMessages !== nextProps.errorMessages)) {
+            (validators !== nextProps.validators || errorMessages !== nextProps.errorMessages)) {
       this.setState({ validators: nextProps.validators, errorMessages: nextProps.errorMessages });
     }
   }
@@ -63,14 +68,16 @@ class ValidatorComponent extends React.Component {
   }
 
   configure() {
+    const { name } = this.props;
     this.context.form.attachToForm(this);
     this.instantValidate = this.context.form.instantValidate;
-    if (!this.props.name) {
+    if (!name) {
       throw new Error('Form field requires a name property when used');
     }
   }
 
   validate(value, includeRequired) {
+    const { validatorListener } = this.props;
     this.invalid = [];
     const result = [];
     let valid = true;
@@ -89,7 +96,7 @@ class ValidatorComponent extends React.Component {
       }));
 
     this.setState({ isValid: valid }, () => {
-      this.props.validatorListener(this.state.isValid);
+      validatorListener(this.state.isValid);
     });
   }
 

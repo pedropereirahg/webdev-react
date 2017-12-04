@@ -26,9 +26,10 @@ class ValidatorForm extends React.Component {
   }
 
   componentWillMount() {
+    const { instantValidate } = this.props;
     this.childs = [];
     this.errors = [];
-    this.instantValidate = this.props.instantValidate !== undefined ? this.props.instantValidate : true;
+    this.instantValidate = instantValidate !== undefined ? instantValidate : true;
   }
 
   getValidator(validator, value, includeRequired) {
@@ -61,16 +62,20 @@ class ValidatorForm extends React.Component {
   }
 
   submit(event) {
+    const {
+      onError,
+      onSubmit
+    } = this.props;
     if (event) {
       event.preventDefault();
     }
     this.errors = [];
     const result = this.walk(this.childs);
     if (this.errors.length) {
-      this.props.onError(this.errors);
+      onError(this.errors);
     }
     if (result) {
-      this.props.onSubmit(event);
+      onSubmit(event);
     }
     return false;
   }
@@ -135,10 +140,16 @@ class ValidatorForm extends React.Component {
 
   render() {
     // eslint-disable-next-line
-        const { onSubmit, instantValidate, onError, ...rest } = this.props;
+        const {
+          onSubmit,
+          instantValidate,
+          onError,
+          children,
+                    ...rest,
+        } = this.props;
     return (
       <form {...rest} onSubmit={this.submit}>
-        {this.props.children}
+        {children}
       </form>
     );
   }
