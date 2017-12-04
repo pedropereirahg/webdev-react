@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import { compose } from 'recompose';
 
 import { withWidth } from 'material-ui';
@@ -29,7 +29,7 @@ class App extends Component {
       alunos: null,
       open: false,
       checked: [0],
-      alunoSelected: null
+      alunoSelected: null,
     };
   }
 
@@ -45,21 +45,21 @@ class App extends Component {
     }
 
     this.setState({
-      checked: newChecked
+      checked: newChecked,
     });
   };
 
   handleClickOpen = (aluno, index) => {
     this.setState({
       open: true,
-      alunoSelected: { ...aluno, index }
+      alunoSelected: { ...aluno, index },
     });
   };
 
   handleRequestClose = () => {
     this.setState({
       open: false,
-      alunoSelected: null
+      alunoSelected: null,
     });
   };
 
@@ -75,7 +75,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch(`https://randomuser.me/api/?results=50&nat=us,dk,fr,gb`)
+    fetch('https://randomuser.me/api/?results=50&nat=us,dk,fr,gb')
       .then(response => response.json())
       .then(json => this.handleAddStudents(json.results));
   }
