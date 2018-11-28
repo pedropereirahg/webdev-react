@@ -1,35 +1,17 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Avatar from "material-ui/Avatar";
-import Button from "material-ui/Button";
-// import { TimePicker, DatePicker, DateTimePicker } from "material-ui-pickers";
-import moment from "moment";
-import "moment/locale/pt-br";
-import _ from "lodash";
-import ArrowForward from "material-ui-icons/ArrowForward";
-import ArrowBack from "material-ui-icons/ArrowBack";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Avatar from 'material-ui/Avatar';
+import Button from 'material-ui/Button';
+import moment from 'moment';
+import 'moment/locale/pt-br';
 
-import Typography from "material-ui/Typography";
-import Collapse from "material-ui/transitions/Collapse";
-import IconButton from "material-ui/IconButton";
-import Card, {
-  CardHeader,
-  CardMedia,
-  CardContent,
-  CardActions
-} from "material-ui/Card";
-import red from "material-ui/colors/red";
-import FavoriteIcon from "material-ui-icons/Favorite";
-import ShareIcon from "material-ui-icons/Share";
-import ExpandMoreIcon from "material-ui-icons/ExpandMore";
-import MoreVertIcon from "material-ui-icons/MoreVert";
-import TextField from "material-ui/TextField";
+import red from 'material-ui/colors/red';
 import Dialog, {
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle
-} from "material-ui/Dialog";
+} from 'material-ui/Dialog';
 import {
   FormControl,
   Input,
@@ -37,68 +19,21 @@ import {
   MenuItem,
   Select,
   withStyles
-} from "material-ui";
-import TextValidator from "../TextValidator";
-import { ValidatorForm } from "react-form-validator-core";
+} from 'material-ui';
+import TextValidator from '../TextValidator';
+import { ValidatorForm } from 'react-form-validator-core';
 
 const genderMap = {
-  male: "Masculino",
-  female: "Feminino",
-  transMale: "Homem Trans",
-  transFemale: "Mulher Trans",
-  agender: "Agênero",
-  none: "Não informado"
+  male: 'Masculino',
+  female: 'Feminino',
+  transMale: 'Homem Trans',
+  transFemale: 'Mulher Trans',
+  agender: 'Agênero',
+  none: 'Não informado'
 };
 
-/**
- *
-
- {
-   "gender": "female",
-   "name": {
-     "title": "miss",
-     "first": "leoniek",
-     "last": "vrijsen"
-   },
-   "location": {
-     "street": "5238 berekuil",
-     "city": "alphen-chaam",
-     "state": "zuid-holland",
-     "postcode": 27062
-   },
-   "email": "leoniek.vrijsen@example.com",
-   "login": {
-     "username": "whitegorilla180",
-     "password": "gregory",
-     "salt": "wdYxzGSZ",
-     "md5": "b0c8c66cbbdf823bc32b08a40a661462",
-     "sha1": "59dca85b5664a1992a480909cbb4559a30d5a4a3",
-     "sha256": "91ba151896785a3b1f555d9427647e860323e51eb25ce640e548a73c0f3c5576"
-   },
-   "dob": "1979-07-09 22:56:00",
-   "registered": "2003-06-23 22:48:07",
-   "phone": "(051)-647-5101",
-   "cell": "(123)-214-6645",
-   "id": {
-     "name": "BSN",
-     "value": "29069711"
-   },
-   "picture": {
-     "large": "https://randomuser.me/api/portraits/women/9.jpg",
-     "medium": "https://randomuser.me/api/portraits/med/women/9.jpg",
-     "thumbnail": "https://randomuser.me/api/portraits/thumb/women/9.jpg"
-   },
-   "nat": "NL"
- }
-
- **/
-
-function getPropertyName(property) {
-  return property;
-}
-
 function getProperty(propertyName, object) {
-  const parts = propertyName.split(".");
+  const parts = propertyName.split('.');
   const length = parts.length;
   let property = object || this;
 
@@ -122,27 +57,23 @@ const styles = theme => ({
   },
 
   expand: {
-    transform: "rotate(0deg)",
-    transition: theme.transitions.create("transform", {
+    transform: 'rotate(0deg)',
+    transition: theme.transitions.create('transform', {
       duration: theme.transitions.duration.shortest
     })
   },
   expandOpen: {
-    transform: "rotate(180deg)"
+    transform: 'rotate(180deg)'
   },
   avatar: {
     backgroundColor: red[500]
   },
   flexGrow: {
-    flex: "1 1 auto"
+    flex: '1 1 auto'
   }
 });
 
-// const FormAluno = props => {
 class FormAluno extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     const props = this.props;
@@ -171,13 +102,13 @@ class FormAluno extends Component {
 }
 
 const SelectGenderAluno = props => {
-  const { fieldKey, name, label, aluno, onChange, formState } = props;
+  const { fieldKey, label, aluno, onChange, formState } = props;
 
   return (
     <FormControl>
       <InputLabel htmlFor="age-simple">{label}</InputLabel>
       <Select
-        value={formState[fieldKey] || "none"}
+        value={formState[fieldKey] || 'none'}
         defaultValue={getProperty(fieldKey, aluno)}
         onChange={onChange(fieldKey)}
         input={<Input name="age" id="age-simple" />}
@@ -193,7 +124,7 @@ const SelectGenderAluno = props => {
 };
 
 const FieldAluno = props => {
-  const { fieldKey, label, aluno, onChange, formState, validators } = props;
+  const { fieldKey, label, aluno, onChange, validators } = props;
 
 
   let componentProps = {
@@ -202,7 +133,7 @@ const FieldAluno = props => {
     defaultValue: getProperty(fieldKey, aluno),
     // value: formState[fieldKey],
     onChange: onChange(fieldKey),
-    margin: "normal",
+    margin: 'normal',
     fullWidth: true,
     label
   };
@@ -217,7 +148,7 @@ const FieldAluno = props => {
           acc.errorMessages !== undefined
         ) {
           acc.validations.push(rule) &&
-            acc.errorMessages.push(message);
+          acc.errorMessages.push(message);
         }
         return acc;
       },
@@ -243,7 +174,7 @@ const FieldAluno = props => {
 class ModalDetailsAluno extends Component {
   constructor(state, props) {
     super(state, props);
-    moment.locale("pt-br");
+    moment.locale('pt-br');
   }
 
   state = {
@@ -284,15 +215,15 @@ class ModalDetailsAluno extends Component {
             src={aluno.picture.large}
           />
           {/*<DatePicker*/}
-            {/*value={this.state.dob || aluno.dob}*/}
-            {/*onChange={this.handleChange("dob")}*/}
-            {/*leftArrowIcon={<ArrowBack />}*/}
-            {/*rightArrowIcon={<ArrowForward />}*/}
-            {/*format="DD/MM/YYYY"*/}
-            {/*okLabel="Salvar"*/}
-            {/*cancelLabel="Cancelar"*/}
-            {/*disableFuture*/}
-            {/*autoOk*/}
+          {/*value={this.state.dob || aluno.dob}*/}
+          {/*onChange={this.handleChange("dob")}*/}
+          {/*leftArrowIcon={<ArrowBack />}*/}
+          {/*rightArrowIcon={<ArrowForward />}*/}
+          {/*format="DD/MM/YYYY"*/}
+          {/*okLabel="Salvar"*/}
+          {/*cancelLabel="Cancelar"*/}
+          {/*disableFuture*/}
+          {/*autoOk*/}
           {/*/>*/}
           <FormAluno
             aluno={aluno}
@@ -302,22 +233,22 @@ class ModalDetailsAluno extends Component {
             registerInputFormState={this.registerInputFormState}
           >
             <FieldAluno
-              fieldKey={"name.first"}
-              label={"Primeiro Nome"}
-              validators={{ required: "Este campo é obrigatório" }}
+              fieldKey={'name.first'}
+              label={'Primeiro Nome'}
+              validators={{ required: 'Este campo é obrigatório' }}
             />
-            <FieldAluno fieldKey={"name.last"} label={"Sobrenome"} />
+            <FieldAluno fieldKey={'name.last'} label={'Sobrenome'} />
             <FieldAluno
-              fieldKey={"email"}
-              label={"E-mail"}
+              fieldKey={'email'}
+              label={'E-mail'}
               validators={{
-                  required: "Este campo é obrigatório",
-                isEmail: "O e-mail está no formato inválido"
+                required: 'Este campo é obrigatório',
+                isEmail: 'O e-mail está no formato inválido'
               }}
             />
-            <SelectGenderAluno fieldKey={"gender"} label="Gênero" />
+            <SelectGenderAluno fieldKey={'gender'} label="Gênero" />
           </FormAluno>
-          <DialogContentText>{""}</DialogContentText>
+          <DialogContentText>{''}</DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={close}> Cancelar </Button>

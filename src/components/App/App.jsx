@@ -80,6 +80,11 @@ class App extends Component {
       .then(json => this.handleAddStudents(json.results));
   }
 
+  // handleSearchChange(event) {
+  //   const { alunos } = this.state;
+  //   this.setState({ alunos: alunos.filter(a => a.name.first === event.target.value) })
+  // }
+
   render() {
     const { classes, width } = this.props;
     const { alunos, open } = this.state;
@@ -98,10 +103,10 @@ class App extends Component {
             <TextField
               label="Nome do aluno"
               id="margin-normal"
-              defaultValue="José da Silva"
               className={classes.textField}
               helperText="Digite o nome do aluno que você deseja procurar"
               margin="normal"
+              // onChange={event => this.handleSearchChange(event)}
             />
           </Paper>
 
