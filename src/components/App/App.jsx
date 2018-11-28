@@ -3,7 +3,6 @@ import { compose } from 'recompose';
 
 import { withWidth } from 'material-ui';
 import { withStyles } from 'material-ui/styles';
-import Divider from 'material-ui/Divider';
 import TextField from 'material-ui/TextField';
 import { CircularProgress } from 'material-ui/Progress';
 import Paper from 'material-ui/Paper';
@@ -27,27 +26,28 @@ class App extends Component {
 
     this.state = {
       alunos: null,
+      alunosFiltered: null,
       open: false,
-      checked: [0],
+      // checked: [0],
       alunoSelected: null,
     };
   }
 
-  handleToggle = value => () => {
-    const { checked } = this.state;
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    this.setState({
-      checked: newChecked,
-    });
-  };
+  // handleToggle = value => () => {
+  //   const { checked } = this.state;
+  //   const currentIndex = checked.indexOf(value);
+  //   const newChecked = [...checked];
+  //
+  //   if (currentIndex === -1) {
+  //     newChecked.push(value);
+  //   } else {
+  //     newChecked.splice(currentIndex, 1);
+  //   }
+  //
+  //   this.setState({
+  //     checked: newChecked,
+  //   });
+  // };
 
   handleClickOpen = (aluno, index) => {
     this.setState({
@@ -71,7 +71,7 @@ class App extends Component {
   };
 
   handleAddStudents(students) {
-    this.setState({ alunos: students });
+    this.setState({ alunos: students, alunosFiltered: students });
   }
 
   componentDidMount() {
@@ -80,14 +80,19 @@ class App extends Component {
       .then(json => this.handleAddStudents(json.results));
   }
 
-  // handleSearchChange(event) {
-  //   const { alunos } = this.state;
-  //   this.setState({ alunos: alunos.filter(a => a.name.first === event.target.value) })
-  // }
+  handleSearchChange(event) {
+    const { alunos } = this.state;
+
+    const alunosFiltered = alunos.filter((element) =>
+      element.name.first.startsWith(event.target.value)
+    );
+
+    this.setState({ alunosFiltered });
+  }
 
   render() {
     const { classes, width } = this.props;
-    const { alunos, open } = this.state;
+    const { alunosFiltered, open } = this.state;
     return (
       <Grid container>
         {open && (
@@ -106,14 +111,14 @@ class App extends Component {
               className={classes.textField}
               helperText="Digite o nome do aluno que você deseja procurar"
               margin="normal"
-              // onChange={event => this.handleSearchChange(event)}
+              onChange={event => this.handleSearchChange(event)}
             />
           </Paper>
 
           <Paper>
-            {alunos ? (
+            {alunosFiltered ? (
               <ListAluno
-                alunos={alunos}
+                alunos={alunosFiltered}
                 width={width}
                 classes={classes}
                 handleClickOpen={this.handleClickOpen}
@@ -121,8 +126,6 @@ class App extends Component {
             ) : (
               <CircularProgress />
             )}
-
-            <Divider />
           </Paper>
         </Grid>
       </Grid>
